@@ -7,7 +7,7 @@ module.exports = {
     args: false,
     guildOnly: true,
     async execute(msg, args) {
-        if(msg.member.voice.channel) {
+        if (msg.member.voice.channel) {
             msg.client.connection = await msg.member.voice.channel.join();
             /*
             msg.member.voice.channel.join()

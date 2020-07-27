@@ -6,8 +6,8 @@ module.exports = {
     cooldown: 5,
     args: true,
     guildOnly: true,
-    execute(msg, args) {
-        if(msg.client.dispatcher !== null) {
+    execute (msg, args) {
+        if (msg.client.dispatcher !== null) {
             const vol = parseInt(args[0]);
             if( vol >= 0 && vol <= 100) {
                 msg.client.dispatcher.setVolume(vol/100);

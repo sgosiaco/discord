@@ -7,7 +7,7 @@ module.exports = {
     args: false,
     guildOnly: true,
     execute(msg, args) {
-        if(msg.client.dispatcher !== null) {
+        if (msg.client.dispatcher !== null) {
             msg.client.dispatcher.pause();
             console.log('Paused media')
         }

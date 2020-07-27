@@ -7,7 +7,7 @@ module.exports = {
     args: false,
     guildOnly: true,
     execute(msg, args) {
-        if(msg.client.connection !== null) {
+        if (msg.client.connection !== null) {
             msg.client.connection.disconnect();
             console.log(`Disconnected from ${msg.client.connection.channel.name}!`)
             msg.client.connection = null;

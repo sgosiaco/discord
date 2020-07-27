@@ -6,7 +6,7 @@ module.exports = {
         const cmdName = args[0].toLowerCase();
         const cmd = msg.client.cmds.get(cmdName) || msg.client.cmds.find(item => item.aliases && item.aliases.includes(cmdName));
 
-        if(!cmd) return msg.reply(`There is no command with name or alias \`${cmdName}\``);
+        if (!cmd) return msg.reply(`There is no command with name or alias \`${cmdName}\``);
 
         delete require.cache[require.resolve(`./${cmd.name}.js`)];
 

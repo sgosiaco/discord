@@ -11,7 +11,7 @@ module.exports = {
         const data = [];
         const { cmds } = msg.client;
 
-        if(!args.length) {
+        if (!args.length) {
             data.push('Here is a list of all my commands:');
             data.push(cmds.map(cmd => cmd.name).join(','));
             data.push(`\nYou can send \`${prefix}help [command name]\` to get info on a specific command!`);
@@ -30,15 +30,15 @@ module.exports = {
         const cmdName = args[0].toLowerCase();
         const cmd  = cmds.get(cmdName) || cmds.find(item => item.aliases && item.aliases.includes(name));
 
-        if(!cmd) {
+        if (!cmd) {
             return msg.reply('That\'s not a valid command!');
         }
 
         data.push(`**Name:** ${cmd.name}`);
 
-        if(cmd.aliases) data.push(`**Aliases:** ${cmd.aliases.join(',')}`);
-        if(cmd.description) data.push(`**Description:** ${cmd.description}`);
-        if(cmd.usage) data.push(`**Usage:** ${cmd.usage}`);
+        if (cmd.aliases) data.push(`**Aliases:** ${cmd.aliases.join(',')}`);
+        if (cmd.description) data.push(`**Description:** ${cmd.description}`);
+        if (cmd.usage) data.push(`**Usage:** ${cmd.usage}`);
         data.push(`**Cooldown:** ${cmd.cooldown || 3} second${(cmd.cooldown || 3) > 1 ? 's' : ''} `);
         msg.channel.send(data, { split: true })
 	},
