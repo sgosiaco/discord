@@ -26,10 +26,11 @@ module.exports = {
 
             msg.client.dispatcher.on('finish', () => {
                 console.log('finished');
-                if (msg.client.songs.isEmpty()) {
-                    msg.client.dispatcher = null
-                } else {
-                    msg.client.dispatcher = msg.client.connection.play(await ytdl(msg.client.songs.dequeue()), { type: 'opus', volume: 0.1 });
+                msg.client.dispatcher = null;
+                if (!msg.client.songs.isEmpty()) {
+                    let song = []
+                    song.push(msg.client.songs.dequeue())
+                    this.execute(msg, song)
                 }
                 //start auto leave timer?
             });
