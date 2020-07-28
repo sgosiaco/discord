@@ -13,9 +13,9 @@ module.exports = {
         try {
             const newCmd = require(`./${cmd.name}.js`);
             msg.client.cmds.set(newCmd.name, newCmd);
-            msg.reply(`Reloaded \`${cmd.name}\`!`)
+            msg.reply(`Reloaded \`${cmd.name}\`!`);
         } catch (error) {
-            console.log(error)
+            console.log(error);
             msg.reply(`There was an error while reloading the command \`${cmd.name}\`\n\`${error.message}\``);
         }
     }

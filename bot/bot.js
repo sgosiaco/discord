@@ -1,6 +1,6 @@
 const fs = require('fs');
 const Discord = require('discord.js');
-const { prefix, token, defaultCooldown } = require('./config.json')
+const { prefix, token, defaultCooldown } = require('./config.json');
 const client = new Discord.Client();
 client.cmds = new Discord.Collection();
 client.connection = null;
@@ -13,7 +13,7 @@ for (const file of cmdFiles) {
 }
 
 const cooldowns = new Discord.Collection();
-const Queue = require('./queue.js')
+const Queue = require('./queue.js');
 client.songs = new Queue(100);
 
 client.on('ready', () => {
@@ -41,12 +41,12 @@ client.on('message', msg => {
     }
 
     if(cmd.args && !args.length) {
-        let reply = 'You didn\'t provide any arguments!'
+        let reply = 'You didn\'t provide any arguments!';
 
         if(cmd.usage) {
             reply += `\nThe proper usage is: \`${prefix}${cmd.name} ${cmd.usage}\``;
         }
-        return msg.reply(reply)
+        return msg.reply(reply);
     }
 
     if(!cooldowns.has(cmd.name)) {
@@ -62,7 +62,7 @@ client.on('message', msg => {
 
         if (now < expireTime) {
             const timeLeft = (expireTime - now) / 1000;
-            return msg.reply(`Please wait ${timeLeft.toFixed(1)} more second${timeLeft > 1 ? 's' : ''} before reusing the \`${cmd.name}\` command.`)
+            return msg.reply(`Please wait ${timeLeft.toFixed(1)} more second${timeLeft > 1 ? 's' : ''} before reusing the \`${cmd.name}\` command.`);
         }
     }
 
@@ -73,7 +73,7 @@ client.on('message', msg => {
         cmd.execute(msg, args);
     } catch (error) {
         console.error(error);
-        msg.reply('Error occured!')
+        msg.reply('Error occured!');
     }
 });
 

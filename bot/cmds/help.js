@@ -40,6 +40,6 @@ module.exports = {
         if (cmd.description) data.push(`**Description:** ${cmd.description}`);
         if (cmd.usage) data.push(`**Usage:** ${cmd.usage}`);
         data.push(`**Cooldown:** ${cmd.cooldown || 3} second${(cmd.cooldown || 3) > 1 ? 's' : ''} `);
-        msg.channel.send(data, { split: true })
+        msg.channel.send(data, { split: true });
 	},
 };
