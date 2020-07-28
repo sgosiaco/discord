@@ -13,6 +13,8 @@ for (const file of cmdFiles) {
 }
 
 const cooldowns = new Discord.Collection();
+const Queue = require('./queue.js')
+client.songs = new Queue();
 
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);

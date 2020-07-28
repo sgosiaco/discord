@@ -26,7 +26,11 @@ module.exports = {
 
             msg.client.dispatcher.on('finish', () => {
                 console.log('finished');
-                msg.client.dispatcher = null
+                if (msg.client.songs.isEmpty()) {
+                    msg.client.dispatcher = null
+                } else {
+                    msg.client.dispatcher = msg.client.connection.play(await ytdl(msg.client.songs.dequeue()), { type: 'opus', volume: 0.1 });
+                }
                 //start auto leave timer?
             });
 
@@ -34,8 +38,15 @@ module.exports = {
                 console.error(error)
                 msg.client.dispatcher = null
             });
+
+            msg.client.dispatcher.on('debug', (error) => {
+                console.error(error)
+            });
+            
         } else {
             //add song to queue
+            msg.client.songs.enqueue(args[0])
+            console.log(`Added to queue ${msg.client.songs.getLast()}`)
         }
     }
 }
