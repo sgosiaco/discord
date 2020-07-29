@@ -39,7 +39,9 @@ module.exports = {
                     title: info.title,
                     url: args[0],
                     author: {
-                        name: info.author.name
+                        name: info.author.name,
+                        url: info.author.channel_url,
+                        icon_url: info.author.avatar
                     },
                     thumbnail: {
                         url: `https://img.youtube.com/vi/${info.video_id}/hqdefault.jpg`
