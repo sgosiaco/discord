@@ -21,9 +21,10 @@ module.exports = {
                 song.push(msg.client.autoplayNext);
                 console.log(`Autoplaying ${msg.client.autoplayNext}`)
                 play.execute(msg, song);
+            } else {
+                msg.client.playerMessage.delete();
+                msg.client.playerMessage = null;
             }
-            msg.client.playerMessage.delete();
-            msg.client.playerMessage = null;
         }
     }
 }
