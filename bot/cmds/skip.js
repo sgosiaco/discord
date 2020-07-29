@@ -16,7 +16,14 @@ module.exports = {
                 let song = [];
                 song.push(msg.client.songs.dequeue());
                 play.execute(msg, song);
+            } else if (msg.client.autoplay && msg.client.autoplayNext !== null) {
+                let song = [];
+                song.push(msg.client.autoplayNext);
+                console.log(`Autoplaying ${msg.client.autoplayNext}`)
+                play.execute(msg, song);
             }
+            msg.client.playerMessage.delete();
+            msg.client.playerMessage = null;
         }
     }
 }

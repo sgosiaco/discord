@@ -37,6 +37,10 @@ module.exports = class Queue {
         return this.size === this.max;
     }
 
+    getSize() {
+        return this.size
+    }
+
     makeEmpty() {
         this.items = [];
         this.front = 0;

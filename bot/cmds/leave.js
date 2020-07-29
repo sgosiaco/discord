@@ -11,6 +11,7 @@ module.exports = {
             msg.client.connection.disconnect();
             console.log(`Disconnected from ${msg.client.connection.channel.name}!`);
             msg.client.connection = null;
+            msg.client.playerMessage = null;
         }
     }
 }
