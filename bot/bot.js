@@ -18,6 +18,7 @@ client.songs = new Queue(100);
 client.autoplay = false;
 client.autoplayNext = null;
 client.playerMessage = null;
+client.currentSong = null;
 
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
@@ -81,3 +82,27 @@ client.on('message', msg => {
 });
 
 client.login(token);
+
+const WebSocket = require('ws')
+const wss = new WebSocket.Server({
+    port: 3000
+})
+client.sockets = []
+wss.on('connection', (ws, req) => {
+    console.log(`Connected from ${req.socket.remoteAddress}`)
+    client.sockets.push(ws)
+    if (client.dispatcher !== null) { //currentSong
+        ws.send(JSON.stringify(client.currentSong))
+        //maybe send queue here?
+    }
+    ws.on('open', () => {
+        console.log('WS opened')
+    })
+    ws.on('message', (message) => {
+        console.log(`Received: ${message}`)
+        ws.send(`Received: ${message}`)
+    })
+    ws.on('close', (code, reason) => {
+        console.log(`Closed: ${reason}`)
+    })
+})

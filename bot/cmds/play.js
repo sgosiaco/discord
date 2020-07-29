@@ -71,6 +71,11 @@ module.exports = {
                 } else {
                     msg.client.playerMessage.edit({ embed : videoEmbed })
                 }
+                msg.client.sockets.forEach(socket => {
+                    socket.send(args[0])
+                    socket.send(JSON.stringify(info))
+                })
+                msg.client.currentSong = info
             })
             msg.client.dispatcher = msg.client.connection.play(await ytdl(args[0]), { type: 'opus', volume: 0.1 }); //ytdl(args[0], { quality: 'highestaudio' })
 
