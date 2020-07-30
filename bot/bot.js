@@ -83,9 +83,14 @@ client.on('message', msg => {
 
 client.login(token);
 
+const https = require('https')
 const WebSocket = require('ws')
+const server = https.createServer({
+    cert: fs.readFileSync('certs/fullchain.pem', 'utf8'),
+    key: fs.readFileSync('certs/privkey.pem', 'utf8')
+})
 const wss = new WebSocket.Server({
-    port: 3000
+    server
 })
 client.sockets = []
 wss.on('connection', (ws, req) => {
@@ -106,3 +111,4 @@ wss.on('connection', (ws, req) => {
         console.log(`Closed: ${reason}`)
     })
 })
+server.listen(3000)
