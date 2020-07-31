@@ -35,9 +35,10 @@ module.exports = {
                 msg.client.dispatcher = null;
             });
 
-            msg.client.dispatcher.on('debug', (error) => {
-                console.error(error);
-            });
+            msg.client.dispatcher.on('close', () => {
+                console.log('Closed Radio dispatcher');
+                ws.close()
+            })
         }
     }
 }
@@ -53,7 +54,7 @@ function heartbeat(interval) {
 }
 
 function connect(msg) {
-	ws = new WebSocket('wss://listen.moe/gateway_v2');
+    ws = new WebSocket('wss://listen.moe/gateway_v2');
 
 	ws.onopen = () => {
 		clearInterval(heartbeatInterval);
@@ -62,10 +63,6 @@ function connect(msg) {
 
 	ws.onmessage = message => {
         if (!message.data.length) return;
-        if  (msg.client.connection === null || msg.client.dispatcher === null) {
-            ws.close();
-            ws = null;
-        }
 		let response;
 		try {
 			response = JSON.parse(message.data);
@@ -124,12 +121,15 @@ function connect(msg) {
 	};
 
 	ws.onclose = error => {
+        console.log('Closed radio WS');
 		clearInterval(heartbeatInterval);
 		heartbeatInterval = null;
 		if (ws) {
 			ws.close();
 			ws = null;
 		}
-		setTimeout(() => connect(), 5000);
+		if (error) {
+            setTimeout(() => connect(), 5000);
+        }
 	};
 }

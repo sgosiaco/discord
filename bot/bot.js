@@ -1,34 +1,10 @@
-const fs = require('fs');
 const Discord = require('discord.js');
 const { prefix, token, defaultCooldown } = require('./config.json');
+const utils = require('./utils.js');
+
 const client = new Discord.Client();
-client.cmds = new Discord.Collection();
-client.connection = null;
-client.dispatcher = null;
-
-const cmdDir =  fs.readdirSync('./cmds', { withFileTypes: true });
-const cmdFiles = cmdDir.filter(dirent => dirent.isFile() && dirent.name.endsWith('.js')).map(dirent => dirent.name);
-const cmdDirectories = cmdDir.filter(dirent => dirent.isDirectory()).map(dirent => dirent.name);
-for (const file of cmdFiles) {
-    const cmd = require(`./cmds/${file}`);
-    client.cmds.set(cmd.name, cmd);
-}
-
-for (const dir of cmdDirectories) {
-    const files = fs.readdirSync(`./cmds/${dir}`, { withFileTypes: true }).filter(dirent => dirent.isFile() && dirent.name.endsWith('.js')).map(dirent => dirent.name);
-    for (const file of files) {
-        const cmd = require(`./cmds/${dir}/${file}`);
-        client.cmds.set(cmd.name, cmd);
-    }
-}
-
+utils.initClient(client, './cmds');
 const cooldowns = new Discord.Collection();
-const Queue = require('./queue.js');
-client.songs = new Queue(100);
-client.autoplay = false;
-client.autoplayNext = null;
-client.playerMessage = null;
-client.currentSong = null;
 
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
@@ -92,33 +68,3 @@ client.on('message', msg => {
 });
 
 client.login(token);
-
-const https = require('https')
-const WebSocket = require('ws')
-const server = https.createServer({
-    cert: fs.readFileSync('certs/fullchain.pem', 'utf8'),
-    key: fs.readFileSync('certs/privkey.pem', 'utf8')
-})
-const wss = new WebSocket.Server({
-    server
-})
-client.sockets = []
-wss.on('connection', (ws, req) => {
-    console.log(`Connected from ${req.socket.remoteAddress}`)
-    client.sockets.push(ws)
-    if (client.dispatcher !== null) { //currentSong
-        ws.send(JSON.stringify(client.currentSong))
-        //maybe send queue here?
-    }
-    ws.on('open', () => {
-        console.log('WS opened')
-    })
-    ws.on('message', (message) => {
-        console.log(`Received: ${message}`)
-        ws.send(`Received: ${message}`)
-    })
-    ws.on('close', (code, reason) => {
-        console.log(`Closed: ${reason}`)
-    })
-})
-server.listen(3000)

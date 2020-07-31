@@ -110,8 +110,8 @@ module.exports = {
                 msg.client.dispatcher = null;
             });
 
-            msg.client.dispatcher.on('debug', (error) => {
-                console.error(error);
+            msg.client.dispatcher.on('close', () => {
+                console.log('Closed dispatcher');
             });
 
         } else {
