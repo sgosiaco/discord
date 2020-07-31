@@ -2,7 +2,7 @@ const join = require('./join.js')
 const yt = require('ytdl-core')
 const ytdl = require('ytdl-core-discord')
 const pattern = new RegExp('^(http(s)?:\/\/)?((w){3}.)?youtu(be|.be)?(\.com)?\/.+');
-const util = require('../utils.js')
+const util = require('../../utils.js')
 const Discord = require('discord.js');
 
 module.exports = {

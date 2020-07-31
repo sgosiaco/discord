@@ -6,10 +6,20 @@ client.cmds = new Discord.Collection();
 client.connection = null;
 client.dispatcher = null;
 
-const cmdFiles = fs.readdirSync('./cmds').filter(file => file.endsWith('.js'));
+const cmdDir =  fs.readdirSync('./cmds', { withFileTypes: true });
+const cmdFiles = cmdDir.filter(dirent => dirent.isFile() && dirent.name.endsWith('.js')).map(dirent => dirent.name);
+const cmdDirectories = cmdDir.filter(dirent => dirent.isDirectory()).map(dirent => dirent.name);
 for (const file of cmdFiles) {
     const cmd = require(`./cmds/${file}`);
     client.cmds.set(cmd.name, cmd);
+}
+
+for (const dir of cmdDirectories) {
+    const files = fs.readdirSync(`./cmds/${dir}`, { withFileTypes: true }).filter(dirent => dirent.isFile() && dirent.name.endsWith('.js')).map(dirent => dirent.name);
+    for (const file of files) {
+        const cmd = require(`./cmds/${dir}/${file}`);
+        client.cmds.set(cmd.name, cmd);
+    }
 }
 
 const cooldowns = new Discord.Collection();

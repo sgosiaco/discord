@@ -1,5 +1,5 @@
 const join = require('./join.js')
-const util = require('../utils.js')
+const util = require('../../utils.js')
 
 module.exports = {
     name: 'radio',
@@ -61,7 +61,11 @@ function connect(msg) {
 	};
 
 	ws.onmessage = message => {
-		if (!message.data.length) return;
+        if (!message.data.length) return;
+        if  (msg.client.connection === null || msg.client.dispatcher === null) {
+            ws.close();
+            ws = null;
+        }
 		let response;
 		try {
 			response = JSON.parse(message.data);
