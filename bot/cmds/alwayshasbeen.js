@@ -18,12 +18,15 @@ module.exports = {
 
         ctx.font = '50px sans-serif';
         ctx.fillStyle = '#ffffff';
-        ctx.fillText('Always has been', 580, 50);
+        const alwaysWidth = ctx.measureText('Always has been').width;
+        ctx.fillText('Always has been', 960 - alwaysWidth - 10, 50);
         const text = args.join(' ');
-        const width = (text.length * 25) / 2 //'Wait its all Ohio?'
+        const width = ctx.measureText(text).width / 2 //'Wait its all Ohio?'
         ctx.fillText(text, (canvas.width/2) - width, (canvas.height/2) - 50)
 
         const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'alwayshasbeen.png');
+        attachment.width = 960;
+        attachment.height = 540;
         msg.delete();
         msg.channel.send('Always has been', attachment);
     }
