@@ -2,14 +2,15 @@ const Discord = require("discord.js");
 const Canvas = require('canvas');
 
 module.exports = {
-    name: 'alwayshasbeen',
-    aliases: ['always'],
-    description: 'Dynamically generates always has been meme.',
-    usage: '<Text goes here>',
+    name: 'alwayspfp',
+    aliases: [],
+    description: '',
+    usage: '<Text goes here> <@mention>',
     cooldown: 5,
     args: true,
     guildOnly: true,
     async execute(msg, args) {
+        if(msg.mentions.users.size !== 1) return msg.reply('Need to tag someone!');
         const canvas = Canvas.createCanvas(960, 540);
         const ctx = canvas.getContext('2d');
         const bg = await Canvas.loadImage('./cmds/alwayshasbeen.png'); //https://i.imgflip.com/46e43q.png
@@ -19,11 +20,8 @@ module.exports = {
         ctx.fillStyle = '#ffffff';
         const alwaysWidth = ctx.measureText('Always has been').width;
         ctx.fillText('Always has been', 960 - alwaysWidth - 10, 50);
-        var link = null;
-        if(args[args.length - 1].includes('http')) {
-            link = args.pop();
-        }
-        const text = args.join(' ');
+        var link = msg.mentions.users.first().displayAvatarURL({ format: 'png', dynamic: false });
+        const text = args.filter(item => !item.includes('<@')).join(' ');
         const width = ctx.measureText(text).width / 2 //'Wait its all Ohio?'
         
         if (link !== null) {
