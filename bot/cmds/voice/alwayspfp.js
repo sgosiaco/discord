@@ -24,16 +24,16 @@ module.exports = {
         const text = args.filter(item => !item.includes('<@')).join(' ');
         const width = ctx.measureText(text).width / 2 //'Wait its all Ohio?'
         
-        if (link !== null) {
-            ctx.save();
-            ctx.beginPath();
-            ctx.arc(275, 260, 185, 0, Math.PI * 2, true);
-            ctx.closePath();
-            ctx.clip();
-            const earth = await Canvas.loadImage(link);
-            ctx.drawImage(earth, 85, 70, 380, 380);
-            ctx.restore();
-        }
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(275, 260, 185, 0, Math.PI * 2, true);
+        ctx.closePath();
+        ctx.clip();
+        const earth = await Canvas.loadImage(link);
+        ctx.drawImage(earth, 85, 70, 380, 380);
+        ctx.restore();
+        const fg = await Canvas.loadImage('./cmds/alwayshasbeenOver.png');
+        ctx.drawImage(fg, 0, 0, canvas.width, canvas.height);
 
         ctx.fillText(text, (canvas.width/2) - width, (canvas.height/2) - 50);
 

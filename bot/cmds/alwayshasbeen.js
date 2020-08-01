@@ -35,6 +35,8 @@ module.exports = {
             const earth = await Canvas.loadImage(link);
             ctx.drawImage(earth, 85, 70, 380, 380);
             ctx.restore();
+            const fg = await Canvas.loadImage('./cmds/alwayshasbeenOver.png');
+            ctx.drawImage(fg, 0, 0, canvas.width, canvas.height);
         }
 
         ctx.fillText(text, (canvas.width/2) - width, (canvas.height/2) - 50);
