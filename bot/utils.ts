@@ -5,7 +5,7 @@ const https = require('https');
 const WebSocket = require('ws');
 const join = require('./cmds/voice/join.js');
 
-exports.uploaded = (published) => {
+export function uploaded(published) {
     const now = new Date(Date.now())
     const upload = new Date(published) // .toUTCString() // .toDateString()
     var days = Math.floor((now.getTime() - upload.getTime()) / (1000 * 3600 * 24))
@@ -21,7 +21,7 @@ exports.uploaded = (published) => {
     }
 }
 
-exports.duration = (length_seconds) => {
+export function duration (length_seconds) {
     var seconds = length_seconds
     var output = ''
     const vals = [3600, 60]
@@ -36,7 +36,7 @@ exports.duration = (length_seconds) => {
     return output
 }
 
-exports.initClient = (client, cmdFolder) => {
+export function initClient(client, cmdFolder) {
     client.cmds = new Discord.Collection();
     client.connection = null;
     client.dispatcher = null;
@@ -55,7 +55,7 @@ exports.initClient = (client, cmdFolder) => {
     this.startWS(client);
 }
 
-exports.loadCMDS = (client, cmdFolder) => { //cmdFolder needs trailing /
+export function loadCMDS(client, cmdFolder) { //cmdFolder needs trailing /
     const cmdDir =  fs.readdirSync(cmdFolder, { withFileTypes: true });
     const cmdFiles = cmdDir.filter(dirent => dirent.isFile() && dirent.name.endsWith('.js')).map(dirent => dirent.name);
     const cmdDirectories = cmdDir.filter(dirent => dirent.isDirectory()).map(dirent => dirent.name);
@@ -81,7 +81,7 @@ exports.loadCMDS = (client, cmdFolder) => { //cmdFolder needs trailing /
     }
 } 
 
-exports.startWS = (client) => {
+export function startWS(client) { 
     const server = https.createServer({
         cert: fs.readFileSync('certs/fullchain.pem', 'utf8'),
         key: fs.readFileSync('certs/privkey.pem', 'utf8')
@@ -111,7 +111,7 @@ exports.startWS = (client) => {
     server.listen(3000)
 }
 
-exports.playStream = async (msg, stream, options) => {
+export async function playStream(msg, stream, options) {
     if (msg.client.connection === null) {
         await join.execute(msg, args);
     }
@@ -141,6 +141,6 @@ exports.playStream = async (msg, stream, options) => {
     }
 }
 
-exports.capitalize = (word) => {
+export function capitalize(word) {
     return `${word[0].toUpperCase()}${word.slice(1)}`;
 }

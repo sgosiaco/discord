@@ -4,6 +4,7 @@
   "description": "",
   "main": "bot.js",
   "scripts": {
+    "watch": "tsc -p tsconfig.json -w",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ."
   },
@@ -12,9 +13,14 @@
   "license": "ISC",
   "dependencies": {
     "@discordjs/opus": "^0.3.2",
+    "@types/node": "^14.0.27",
     "canvas": "^2.6.1",
     "discord.js": "^12.2.0",
     "sodium": "^3.0.2",
+    "typescript": "^3.9.7",
     "ytdl-core-discord": "^1.2.1"
+  },
+  "devDependencies": {
+    "ts-node": "^8.10.2"
   }
 }

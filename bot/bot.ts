@@ -1,6 +1,6 @@
-const Discord = require('discord.js');
-const { prefix, token, defaultCooldown } = require('./config.json');
-const utils = require('./utils.js');
+import * as Discord from 'discord.js';
+import { prefix, token, defaultCooldown } from './config.json';
+import * as utils from './utils.js';
 
 const client = new Discord.Client();
 utils.initClient(client, './cmds');
