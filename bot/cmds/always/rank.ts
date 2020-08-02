@@ -12,7 +12,7 @@ module.exports = {
     always: ['general', 'lieutenant', 'colonel', 'admiral', 'captian', 'major'],
     guildOnly: true,
     async execute(msg, words, word) {
-        var idx = words.indexOf(word);
+        let idx = words.indexOf(word);
         if (words[idx + 1] === undefined) return;
         const text = `${utils.capitalize(word)} ${utils.capitalize(words[idx + 1])}`;
         const canvas = Canvas.createCanvas(300, 300);

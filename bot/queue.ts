@@ -1,4 +1,10 @@
-module.exports = class Queue {
+export class Queue {
+    items : Array<any>;
+    front: number;
+    back: number;
+    size: number;
+    max: number;
+
     constructor(max) {
         this.makeEmpty();
         this.max = max === 0 ? 2147483647 : max; //set "uncapped max" at 2^31-1 for now

@@ -1,4 +1,6 @@
-const http = require('http')
+import * as Discord from 'discord.js';
+import { get } from 'http'; 
+
 module.exports = {
     name: 'super',
     aliases: [],
@@ -7,8 +9,8 @@ module.exports = {
     cooldown: 5,
     args: false,
     guildOnly: true,
-    execute(msg, args) {
-        http.get('http://graphics.slmn.io/super/tf.php', res => {
+    execute(msg: Discord.Message, args: Array<string>) {
+        get('http://graphics.slmn.io/super/tf.php', res => {
             let data = ''
             res.on('data', d => {
                 data += d

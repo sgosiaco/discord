@@ -1,20 +1,21 @@
 import * as Discord from 'discord.js';
 import { prefix, token, defaultCooldown } from './config.json';
-import * as utils from './utils.js';
+import Settings from './settings';
 
 const client = new Discord.Client();
-utils.initClient(client, './cmds');
-const cooldowns = new Discord.Collection();
+const settings = Settings.getInstance();
+settings.init('./cmds');
+const cooldowns= new Discord.Collection();
 
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
 });
 
 client.on('message', msg => {
-    if (client.always && !msg.author.bot && !msg.content.startsWith(prefix) && !msg.mentions.has(client.user) && msg.channel.type === 'text') {
-        var words = msg.content.trim().split(/ +/).map(word => word.toLowerCase());
-        var keyword = null;
-        const cmd = client.alwaysCMDS.find(item => {
+    if (settings.always && !msg.author.bot && !msg.content.startsWith(prefix) && !msg.mentions.has(client.user) && msg.channel.type === 'text') {
+        let words = msg.content.trim().split(/ +/).map(word => word.toLowerCase());
+        let keyword = null;
+        const cmd = settings.alwaysCMDS.find(item => {
             keyword = item.always.filter(word => words.includes(word)).shift()
             return keyword !== undefined;
         });
@@ -24,10 +25,10 @@ client.on('message', msg => {
     if ( (!msg.content.startsWith(prefix) || msg.author.bot) && !msg.mentions.has(client.user)) return;
 
     const at = `<@!${client.user.id}>`
-    var args = msg.content.slice(prefix.length).trim().split(/ +/);
+    let args = msg.content.slice(prefix.length).trim().split(/ +/);
     if (msg.mentions.has(client.user)) {
         msg.mentions.users.delete(client.user);
-        var temp = msg.content.replace(at, '').trim();
+        let temp = msg.content.replace(at, '').trim();
         args = temp.startsWith(prefix) ? temp.slice(prefix.length).trim().split(/ +/) : temp.trim().split(/ +/);
     }
     const cmdName = args.shift().toLowerCase();

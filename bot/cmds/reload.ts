@@ -1,7 +1,9 @@
+import * as Discord from 'discord.js';
+
 module.exports = {
     name: 'reload',
     description: 'Reloads a command',
-    execute(msg, args) {
+    execute(msg: Discord.Message, args: Array<string>) {
         if (!args.length) return msg.reply('You didn\'t pass a command to reload!');
         const cmdName = args[0].toLowerCase();
         const cmd = msg.client.cmds.get(cmdName) || msg.client.cmds.find(item => item.aliases && item.aliases.includes(cmdName));

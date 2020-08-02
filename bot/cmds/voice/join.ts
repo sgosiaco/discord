@@ -1,3 +1,6 @@
+import * as Discord from 'discord.js';
+import Settings from '../../settings';
+
 module.exports = {
     name: 'join',
     aliases: [],
@@ -6,17 +9,9 @@ module.exports = {
     cooldown: 5,
     args: false,
     guildOnly: true,
-    async execute(msg, args) {
+    async execute(msg: Discord.Message, args: Array<string>) {
         if (msg.member.voice.channel) {
-            msg.client.connection = await msg.member.voice.channel.join();
-            /*
-            msg.member.voice.channel.join()
-                .then(connection => {
-                    console.log(`Connected to ${connection.channel.name}!`)
-                     msg.client.connection = connection
-                })
-                .catch(console.error);
-            */
+            Settings.getInstance().connection = await msg.member.voice.channel.join();
         }
     }
 }

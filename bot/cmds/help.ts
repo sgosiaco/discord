@@ -1,4 +1,5 @@
-const { prefix } = require('../config.json');
+import * as Discord from 'discord.js';
+import { prefix } from '../config.json';
 
 module.exports = {
     name: 'help',
@@ -7,7 +8,7 @@ module.exports = {
 	usage: '[command name]',
     cooldown: 5,
     guildOnly: false,
-	execute(msg, args) {
+	execute(msg: Discord.Message, args: Array<string>) {
         const data = [];
         const { cmds } = msg.client;
 

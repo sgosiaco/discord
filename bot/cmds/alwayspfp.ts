@@ -1,5 +1,5 @@
-const Discord = require("discord.js");
-const Canvas = require('canvas');
+import * as Discord from 'discord.js';
+import * as Canvas from 'canvas';
 
 module.exports = {
     name: 'alwayspfp',
@@ -9,7 +9,7 @@ module.exports = {
     cooldown: 5,
     args: true,
     guildOnly: true,
-    async execute(msg, args) {
+    async execute(msg: Discord.Message, args: Array<string>) {
         if(msg.mentions.users.size !== 1) return msg.reply('Need to tag someone!');
         const canvas = Canvas.createCanvas(960, 540);
         const ctx = canvas.getContext('2d');
@@ -23,7 +23,7 @@ module.exports = {
         const alwaysWidth = ctx.measureText('Always has been').width;
         ctx.strokeText('Always has been', 960 - alwaysWidth - 10, 50);
         ctx.fillText('Always has been', 960 - alwaysWidth - 10, 50);
-        var link = msg.mentions.users.first().displayAvatarURL({ format: 'png', dynamic: false });
+        let link = msg.mentions.users.first().displayAvatarURL({ format: 'png', dynamic: false });
         const text = args.filter(item => !item.includes('<@')).join(' ');
         const width = ctx.measureText(text).width / 2 //'Wait its all Ohio?'
         
