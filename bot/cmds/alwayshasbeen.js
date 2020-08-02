@@ -17,7 +17,10 @@ module.exports = {
 
         ctx.font = '50px sans-serif';
         ctx.fillStyle = '#ffffff';
+        ctx.strokeStyle = '#000000';
+        ctx.lineWidth = 4;
         const alwaysWidth = ctx.measureText('Always has been').width;
+        ctx.strokeText('Always has been', 960 - alwaysWidth - 10, 50);
         ctx.fillText('Always has been', 960 - alwaysWidth - 10, 50);
         var link = null;
         if(args[args.length - 1].includes('http')) {
@@ -39,6 +42,7 @@ module.exports = {
             ctx.drawImage(fg, 0, 0, canvas.width, canvas.height);
         }
 
+        ctx.strokeText(text, (canvas.width/2) - width, (canvas.height/2) - 50);
         ctx.fillText(text, (canvas.width/2) - width, (canvas.height/2) - 50);
 
         const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'alwayshasbeen.png');

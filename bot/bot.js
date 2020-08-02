@@ -11,6 +11,16 @@ client.on('ready', () => {
 });
 
 client.on('message', msg => {
+    if (client.always && !msg.author.bot && !msg.content.startsWith(prefix) && !msg.mentions.has(client.user) && msg.channel.type === 'text') {
+        var words = msg.content.trim().split(/ +/).map(word => word.toLowerCase());
+        var keyword = null;
+        const cmd = client.alwaysCMDS.find(item => {
+            keyword = item.always.filter(word => words.includes(word)).shift()
+            return keyword !== undefined;
+        });
+        if (!cmd) return;
+        return cmd.execute(msg, words, keyword);
+    }
     if ( (!msg.content.startsWith(prefix) || msg.author.bot) && !msg.mentions.has(client.user)) return;
 
     const at = `<@!${client.user.id}>`

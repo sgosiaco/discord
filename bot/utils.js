@@ -46,6 +46,8 @@ exports.initClient = (client, cmdFolder) => {
     client.playerMessage = null;
     client.currentSong = null;
     client.sockets = [];
+    client.always = false;
+    client.alwaysCMDS = new Discord.Collection();
     if (!cmdFolder.endsWith('/')) {
         cmdFolder = `${cmdFolder}/`
     }
@@ -59,14 +61,22 @@ exports.loadCMDS = (client, cmdFolder) => { //cmdFolder needs trailing /
     const cmdDirectories = cmdDir.filter(dirent => dirent.isDirectory()).map(dirent => dirent.name);
     for (const file of cmdFiles) {
         const cmd = require(`${cmdFolder}${file}`);
-        client.cmds.set(cmd.name, cmd);
+        if (cmd.always) {
+            client.alwaysCMDS.set(cmd.name, cmd);
+        } else {
+            client.cmds.set(cmd.name, cmd);
+        }
     }
 
     for (const dir of cmdDirectories) {
         const files = fs.readdirSync(`${cmdFolder}${dir}`, { withFileTypes: true }).filter(dirent => dirent.isFile() && dirent.name.endsWith('.js')).map(dirent => dirent.name);
         for (const file of files) {
             const cmd = require(`./cmds/${dir}/${file}`);
-            client.cmds.set(cmd.name, cmd);
+            if (cmd.always) {
+                client.alwaysCMDS.set(cmd.name, cmd);
+            } else {
+                client.cmds.set(cmd.name, cmd);
+            }
         }
     }
 } 
@@ -129,4 +139,8 @@ exports.playStream = async (msg, stream, options) => {
             console.log('Closed stream dispatcher');
         })
     }
+}
+
+exports.capitalize = (word) => {
+    return `${word[0].toUpperCase()}${word.slice(1)}`;
 }
