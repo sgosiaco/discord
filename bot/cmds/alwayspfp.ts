@@ -1,5 +1,5 @@
-const Discord = require("discord.js");
-const Canvas = require('canvas');
+import { Message, MessageAttachment } from 'discord.js';
+import { createCanvas, loadImage } from 'canvas';
 
 module.exports = {
     name: 'alwayspfp',
@@ -9,11 +9,11 @@ module.exports = {
     cooldown: 5,
     args: true,
     guildOnly: true,
-    async execute(msg, args) {
+    async execute(msg: Message, args: Array<string>) {
         if(msg.mentions.users.size !== 1) return msg.reply('Need to tag someone!');
-        const canvas = Canvas.createCanvas(960, 540);
+        const canvas = createCanvas(960, 540);
         const ctx = canvas.getContext('2d');
-        const bg = await Canvas.loadImage('./cmds/alwayshasbeen.png'); //https://i.imgflip.com/46e43q.png
+        const bg = await loadImage('./cmds/alwayshasbeen.png'); //https://i.imgflip.com/46e43q.png
         ctx.drawImage(bg, 0, 0, canvas.width, canvas.height);
 
         ctx.font = '50px sans-serif';
@@ -23,7 +23,7 @@ module.exports = {
         const alwaysWidth = ctx.measureText('Always has been').width;
         ctx.strokeText('Always has been', 960 - alwaysWidth - 10, 50);
         ctx.fillText('Always has been', 960 - alwaysWidth - 10, 50);
-        var link = msg.mentions.users.first().displayAvatarURL({ format: 'png', dynamic: false });
+        let link = msg.mentions.users.first().displayAvatarURL({ format: 'png', dynamic: false });
         const text = args.filter(item => !item.includes('<@')).join(' ');
         const width = ctx.measureText(text).width / 2 //'Wait its all Ohio?'
         
@@ -32,16 +32,16 @@ module.exports = {
         ctx.arc(275, 260, 185, 0, Math.PI * 2, true);
         ctx.closePath();
         ctx.clip();
-        const earth = await Canvas.loadImage(link);
+        const earth = await loadImage(link);
         ctx.drawImage(earth, 85, 70, 380, 380);
         ctx.restore();
-        const fg = await Canvas.loadImage('./cmds/alwayshasbeenOver.png');
+        const fg = await loadImage('./cmds/alwayshasbeenOver.png');
         ctx.drawImage(fg, 0, 0, canvas.width, canvas.height);
 
         ctx.strokeText(text, (canvas.width/2) - width, (canvas.height/2) - 50);
         ctx.fillText(text, (canvas.width/2) - width, (canvas.height/2) - 50);
 
-        const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'alwayshasbeen.png');
+        const attachment = new MessageAttachment(canvas.toBuffer(), 'alwayshasbeen.png');
         attachment.width = 960;
         attachment.height = 540;
         msg.delete();

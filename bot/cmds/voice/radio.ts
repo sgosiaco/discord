@@ -1,5 +1,8 @@
-const join = require('./join.js')
-const util = require('../../utils.js')
+import { Message } from 'discord.js';
+import Settings from '../../settings';
+import * as join from './join';
+import { duration } from '../../utils';
+import Command from '../Command';
 
 module.exports = {
     name: 'radio',
@@ -9,33 +12,34 @@ module.exports = {
     cooldown: 5,
     args: false,
     guildOnly: true,
-    async execute(msg, args) {
-        if (msg.client.connection === null) {
-            await join.execute(msg, args);
+    async execute(msg: Message, args: Array<string>) {
+        const settings = Settings.getInstance();
+        if (settings.connection === null) {
+            await (join as Command).execute(msg, args);
         }
 
-        if(msg.client.dispatcher === null) {
+        if(settings.dispatcher === null) {
             console.log('Playing radio')
-            msg.client.dispatcher = msg.client.connection.play('https://listen.moe/opus', { volume: .1}); // /stream
-            msg.client.dispatcher.on('start', () => {
+            settings.dispatcher = settings.connection.play('https://listen.moe/opus', { volume: .1}); // /stream
+            settings.dispatcher.on('start', () => {
                 console.log('Radio started');
                 connect(msg);
                 msg.delete();
             });
 
-            msg.client.dispatcher.on('finish', () => {
+            settings.dispatcher.on('finish', () => {
                 console.log('Radio finished');
-                msg.client.dispatcher.destroy();
-                msg.client.dispatcher = null;
+                settings.dispatcher.destroy();
+                settings.dispatcher = null;
             });
 
-            msg.client.dispatcher.on('error',(error) => {
+            settings.dispatcher.on('error',(error) => {
                 console.error(error);
-                msg.client.dispatcher.destroy();
-                msg.client.dispatcher = null;
+                settings.dispatcher.destroy();
+                settings.dispatcher = null;
             });
 
-            msg.client.dispatcher.on('close', () => {
+            settings.dispatcher.on('close', () => {
                 console.log('Closed Radio dispatcher');
                 ws.close()
             })
@@ -63,7 +67,8 @@ function connect(msg) {
 
 	ws.onmessage = message => {
         if (!message.data.length) return;
-		let response;
+        let response;
+        const settings = Settings.getInstance()
 		try {
 			response = JSON.parse(message.data);
 		} catch (error) {
@@ -85,7 +90,7 @@ function connect(msg) {
                         fields: [
                             {
                                 name: 'Length',
-                                value: util.duration(response.d.song.duration),
+                                value: duration(response.d.song.duration),
                                 inline: true
                             },
                             {
@@ -98,13 +103,13 @@ function connect(msg) {
                             text: `Listeners: ${response.d.listeners}`
                         }
                     };
-                    if (msg.client.playerMessage == null) {
+                    if (settings.playerMessage == null) {
                         msg.channel.send({ embed : videoEmbed })
                         .then((item) => {
-                            msg.client.playerMessage = item
+                            settings.playerMessage = item
                         });
                     } else {
-                        msg.client.playerMessage.edit({ embed : videoEmbed })
+                        settings.playerMessage.edit({ embed : videoEmbed })
                     }
                     break;
                 case 'TRACK_UPDATE_REQUEST':
@@ -129,7 +134,7 @@ function connect(msg) {
 			ws = null;
 		}
 		if (error) {
-            setTimeout(() => connect(), 5000);
+            setTimeout(() => connect(msg), 5000);
         }
 	};
 }
