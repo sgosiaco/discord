@@ -2,8 +2,9 @@ import { Collection, VoiceConnection, StreamDispatcher, Message } from 'discord.
 import { readdirSync, readFileSync } from 'fs';
 import { Queue } from './queue';
 import { createServer } from 'https';
-import * as WebSocket from 'ws';
-import Command from './cmds/Command'
+import WebSocket from 'ws';
+import Command from './cmds/Command';
+import ytdl from 'ytdl-core';
 
 export default class Settings {
     private static instance: Settings;
@@ -14,7 +15,7 @@ export default class Settings {
     autoplay = false;
     autoplayNext: string = null;
     playerMessage: Message = null;
-    currentSong: object = null;
+    currentSong: ytdl.videoInfo = null;
     sockets: Array<WebSocket> = [];
     always = false;
     alwaysCMDS: Collection<string, Command> = new Collection();

@@ -1,6 +1,5 @@
 import * as join from './join';
-import yt = require('ytdl-core');
-import * as ytdl from 'ytdl-core-discord';
+import ytdl from 'ytdl-core-discord';
 import { duration, uploaded } from '../../utils';
 import { Message, MessageEmbed } from 'discord.js';
 import Settings from '../../settings';
@@ -28,7 +27,7 @@ module.exports = {
         
         if (settings.dispatcher === null) {
             console.log(args[0]);
-            yt.getInfo(args[0], (err, info) => {
+            ytdl.getInfo(args[0], (err, info) => {
                 if(err) {
                     return msg.reply('Error occured trying to load video info!')
                 }
