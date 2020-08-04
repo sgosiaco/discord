@@ -1,4 +1,5 @@
-import * as Discord from 'discord.js';
+import { Message } from 'discord.js';
+import Settings from '../settings';
 
 module.exports = {
     name: 'purge',
@@ -8,8 +9,9 @@ module.exports = {
     cooldown: 5,
     args: false,
     guildOnly: true,
-    execute(msg: Discord.Message, args: Array<string>) {
-        msg.client.always = !msg.client.always;
-        msg.reply(`The purge is now ${msg.client.always ? 'active' : 'disabled'}`);
+    execute(msg: Message, args: Array<string>) {
+        const settings = Settings.getInstance()
+        settings.always = !settings.always;
+        msg.reply(`The purge is now ${settings.always ? 'active' : 'disabled'}`);
     }
 }

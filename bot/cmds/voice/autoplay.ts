@@ -1,4 +1,6 @@
-const Discord = require('discord.js');
+import {  Message, MessageEmbed } from 'discord.js';
+import Settings from '../../settings';
+
 module.exports = {
     name: 'autoplay',
     aliases: ['auto'],
@@ -7,12 +9,13 @@ module.exports = {
     cooldown: 5,
     args: false,
     guildOnly: true,
-    execute(msg, args) {
-        if (msg.client.dispatcher !== null) {
-            msg.client.autoplay = !msg.client.autoplay;
+    execute(msg: Message, args: Array<string>) {
+        const settings = Settings.getInstance()
+        if (settings.dispatcher !== null) {
+            settings.autoplay = !settings.autoplay;
             msg.delete()
-            const embed = new Discord.MessageEmbed(msg.client.playerMessage.embeds[0]).setFooter(`Autoplay: ${msg.client.autoplay ? 'on' : 'off'} | Queue ${msg.client.songs.getSize()}`)
-            msg.client.playerMessage.edit(embed);
+            const embed = new MessageEmbed(settings.playerMessage.embeds[0]).setFooter(`Autoplay: ${settings.autoplay ? 'on' : 'off'} | Queue ${settings.songs.getSize()}`)
+            settings.playerMessage.edit(embed);
         }
     }
 }

@@ -4,7 +4,7 @@ import VueNativeSock from 'vue-native-websocket'
 // import example from './module-example'
 
 Vue.use(Vuex)
-Vue.use(VueNativeSock, 'wss://rimurubot.ddns.net:3000', {
+Vue.use(VueNativeSock, 'wss://rimurubot.ml:3000', {
   reconnection: true
 })
 

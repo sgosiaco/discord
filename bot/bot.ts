@@ -1,11 +1,11 @@
-import * as Discord from 'discord.js';
+import { Client, Collection} from 'discord.js';
 import { prefix, token, defaultCooldown } from './config.json';
 import Settings from './settings';
 
-const client = new Discord.Client();
+const client = new Client();
 const settings = Settings.getInstance();
 settings.init('./cmds');
-const cooldowns= new Discord.Collection();
+const cooldowns= new Collection();
 
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
@@ -33,7 +33,7 @@ client.on('message', msg => {
     }
     const cmdName = args.shift().toLowerCase();
 
-    const cmd = client.cmds.get(cmdName) || client.cmds.find(item => item.aliases && item.aliases.includes(cmdName));
+    const cmd = settings.cmds.get(cmdName) || settings.cmds.find(item => item.aliases && item.aliases.includes(cmdName));
 
     if (!cmd) return;
     
@@ -51,7 +51,7 @@ client.on('message', msg => {
     }
 
     if(!cooldowns.has(cmd.name)) {
-        cooldowns.set(cmd.name, new Discord.Collection());
+        cooldowns.set(cmd.name, new Collection());
     }
 
     const now = Date.now();

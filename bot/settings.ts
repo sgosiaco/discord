@@ -1,4 +1,4 @@
-import * as Discord from 'discord.js';
+import { Collection, VoiceConnection, StreamDispatcher, Message } from 'discord.js';
 import { readdirSync, readFileSync } from 'fs';
 import { Queue } from './queue';
 import { createServer } from 'https';
@@ -6,17 +6,17 @@ import * as WebSocket from 'ws';
 
 export default class Settings {
     private static instance: Settings;
-    cmds: Discord.Collection<string, object> = new Discord.Collection();
-    connection: Discord.VoiceConnection = null;
-    dispatcher: Discord.StreamDispatcher = null;
+    cmds: Collection<string, object> = new Collection();
+    connection: VoiceConnection = null;
+    dispatcher: StreamDispatcher = null;
     songs = new Queue(100);
     autoplay = false;
     autoplayNext: string = null;
-    playerMessage: Discord.Message = null;
+    playerMessage: Message = null;
     currentSong: object = null;
     sockets: Array<WebSocket> = [];
     always = false;
-    alwaysCMDS: Discord.Collection<string, object> = new Discord.Collection();
+    alwaysCMDS: Collection<string, object> = new Collection();
 
     private constructor() {
         

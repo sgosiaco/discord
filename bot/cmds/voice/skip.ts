@@ -1,4 +1,6 @@
-const play = require('./play.js')
+import { Message } from 'discord.js';
+import Settings from '../../settings';
+import * as play from './play';
 
 module.exports = {
     name: 'skip',
@@ -8,22 +10,23 @@ module.exports = {
     cooldown: 5,
     args: false,
     guildOnly: true,
-    execute(msg, args) {
-        if (msg.client.dispatcher !== null) {
-            msg.client.dispatcher.destroy();
-            msg.client.dispatcher = null;
-            if (!msg.client.songs.isEmpty()) {
+    execute(msg: Message, args: Array<string>) {
+        const settings = Settings.getInstance()
+        if (settings.dispatcher !== null) {
+            settings.dispatcher.destroy();
+            settings.dispatcher = null;
+            if (!settings.songs.isEmpty()) {
                 let song = [];
-                song.push(msg.client.songs.dequeue());
+                song.push(settings.songs.dequeue());
                 play.execute(msg, song);
-            } else if (msg.client.autoplay && msg.client.autoplayNext !== null) {
+            } else if (settings.autoplay && settings.autoplayNext !== null) {
                 let song = [];
-                song.push(msg.client.autoplayNext);
-                console.log(`Autoplaying ${msg.client.autoplayNext}`)
+                song.push(settings.autoplayNext);
+                console.log(`Autoplaying ${settings.autoplayNext}`)
                 play.execute(msg, song);
             } else {
-                msg.client.playerMessage.delete();
-                msg.client.playerMessage = null;
+                settings.playerMessage.delete();
+                settings.playerMessage = null;
             }
         }
     }

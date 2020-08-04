@@ -1,3 +1,6 @@
+import { Message } from 'discord.js';
+import Settings from '../../settings';
+
 module.exports = {
     name: 'stop',
     aliases: [],
@@ -6,11 +9,12 @@ module.exports = {
     cooldown: 5,
     args: false,
     guildOnly: true,
-    execute(msg, args) {
-        if (msg.client.dispatcher !== null) {
-            msg.client.dispatcher.destroy();
+    execute(msg: Message, args: Array<string>) {
+        let settings = Settings.getInstance()
+        if (settings.dispatcher !== null) {
+            settings.dispatcher.destroy();
             console.log('Stopped media');
-            msg.client.dispatcher = null;
+            settings.dispatcher = null;
         }
     }
 }

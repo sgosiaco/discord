@@ -1,4 +1,5 @@
-const join = require('./cmds/voice/join.js'); // still need to convert!!
+import * as join from './cmds/voice/join';
+import Settings from './settings';
 
 export function uploaded(published) {
     const now = new Date(Date.now())
@@ -32,30 +33,31 @@ export function duration(length_seconds) {
 }
 
 export async function playStream(msg, stream, options) {
-    if (msg.client.connection === null) {
+    const settings = Settings.getInstance();
+    if (settings.connection === null) {
         await join.execute(msg, args);
     }
 
-    if(msg.client.dispatcher === null) {
+    if(settings.dispatcher === null) {
         console.log('Playing stream')
-        msg.client.dispatcher = msg.client.connection.play(stream, options);
-        msg.client.dispatcher.on('start', () => {
+        settings.dispatcher = settings.connection.play(stream, options);
+        settings.dispatcher.on('start', () => {
             console.log('Stream started');
         });
 
-        msg.client.dispatcher.on('finish', () => {
+        settings.dispatcher.on('finish', () => {
             console.log('Stream finished');
-            msg.client.dispatcher.destroy();
-            msg.client.dispatcher = null;
+            settings.dispatcher.destroy();
+            settings.dispatcher = null;
         });
 
-        msg.client.dispatcher.on('error',(error) => {
+        settings.dispatcher.on('error',(error) => {
             console.error(error);
-            msg.client.dispatcher.destroy();
-            msg.client.dispatcher = null;
+            settings.dispatcher.destroy();
+            settings.dispatcher = null;
         });
 
-        msg.client.dispatcher.on('close', () => {
+        settings.dispatcher.on('close', () => {
             console.log('Closed stream dispatcher');
         })
     }

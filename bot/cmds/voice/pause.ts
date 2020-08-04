@@ -1,3 +1,6 @@
+import { Message } from 'discord.js';
+import Settings from '../../settings';
+
 module.exports = {
     name: 'pause',
     aliases: [],
@@ -6,9 +9,10 @@ module.exports = {
     cooldown: 5,
     args: false,
     guildOnly: true,
-    execute(msg, args) {
-        if (msg.client.dispatcher !== null) {
-            msg.client.dispatcher.pause();
+    execute(msg: Message, args: Array<string>) {
+        const settings = Settings.getInstance()
+        if (settings.dispatcher !== null) {
+            settings.dispatcher.pause();
             console.log('Paused media');
         }
     }
