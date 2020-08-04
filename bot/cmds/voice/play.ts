@@ -1,10 +1,11 @@
 import * as join from './join';
-import * as yt from 'ytdl-core';
+import yt = require('ytdl-core');
 import * as ytdl from 'ytdl-core-discord';
 import { duration, uploaded } from '../../utils';
 import { Message, MessageEmbed } from 'discord.js';
 import Settings from '../../settings';
 const pattern = new RegExp('^(http(s)?:\/\/)?((w){3}.)?youtu(be|.be)?(\.com)?\/.+');
+import Command from '../Command';
 
 module.exports = {
     name: 'play',
@@ -22,7 +23,7 @@ module.exports = {
         }
 
         if (settings.connection === null) {
-            await join.execute(msg, args);
+            await (join as Command).execute(msg, args);
         }
         
         if (settings.dispatcher === null) {

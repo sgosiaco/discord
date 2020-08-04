@@ -1,11 +1,11 @@
-import { Client, Collection} from 'discord.js';
+import { Client, Collection, MessageFlags} from 'discord.js';
 import { prefix, token, defaultCooldown } from './config.json';
 import Settings from './settings';
 
 const client = new Client();
 const settings = Settings.getInstance();
 settings.init('./cmds');
-const cooldowns= new Collection();
+const cooldowns: Collection<string, Collection<string, number>>= new Collection();
 
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
@@ -27,7 +27,7 @@ client.on('message', msg => {
     const at = `<@!${client.user.id}>`
     let args = msg.content.slice(prefix.length).trim().split(/ +/);
     if (msg.mentions.has(client.user)) {
-        msg.mentions.users.delete(client.user);
+        msg.mentions.users.delete(client.user.id);
         let temp = msg.content.replace(at, '').trim();
         args = temp.startsWith(prefix) ? temp.slice(prefix.length).trim().split(/ +/) : temp.trim().split(/ +/);
     }

@@ -1,6 +1,7 @@
 import { Message } from 'discord.js';
 import Settings from '../../settings';
 import * as play from './play';
+import Command from '../Command';
 
 module.exports = {
     name: 'skip',
@@ -18,12 +19,12 @@ module.exports = {
             if (!settings.songs.isEmpty()) {
                 let song = [];
                 song.push(settings.songs.dequeue());
-                play.execute(msg, song);
+                (play as Command).execute(msg, song);
             } else if (settings.autoplay && settings.autoplayNext !== null) {
                 let song = [];
                 song.push(settings.autoplayNext);
-                console.log(`Autoplaying ${settings.autoplayNext}`)
-                play.execute(msg, song);
+                console.log(`Autoplaying ${settings.autoplayNext}`);
+                (play as Command).execute(msg, song);
             } else {
                 settings.playerMessage.delete();
                 settings.playerMessage = null;

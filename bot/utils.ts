@@ -1,5 +1,6 @@
 import * as join from './cmds/voice/join';
 import Settings from './settings';
+import Command from './cmds/Command';
 
 export function uploaded(published) {
     const now = new Date(Date.now())
@@ -35,7 +36,7 @@ export function duration(length_seconds) {
 export async function playStream(msg, stream, options) {
     const settings = Settings.getInstance();
     if (settings.connection === null) {
-        await join.execute(msg, args);
+        await (join as Command).execute(msg, []); // args
     }
 
     if(settings.dispatcher === null) {

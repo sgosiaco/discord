@@ -2,6 +2,7 @@ import { Message } from 'discord.js';
 import Settings from '../../settings';
 import * as join from './join';
 import { duration } from '../../utils';
+import Command from '../Command';
 
 module.exports = {
     name: 'radio',
@@ -14,7 +15,7 @@ module.exports = {
     async execute(msg: Message, args: Array<string>) {
         const settings = Settings.getInstance();
         if (settings.connection === null) {
-            await join.execute(msg, args);
+            await (join as Command).execute(msg, args);
         }
 
         if(settings.dispatcher === null) {
@@ -28,14 +29,14 @@ module.exports = {
 
             settings.dispatcher.on('finish', () => {
                 console.log('Radio finished');
-                dispatcher.destroy();
-                dispatcher = null;
+                settings.dispatcher.destroy();
+                settings.dispatcher = null;
             });
 
             settings.dispatcher.on('error',(error) => {
                 console.error(error);
-                dispatcher.destroy();
-                dispatcher = null;
+                settings.dispatcher.destroy();
+                settings.dispatcher = null;
             });
 
             settings.dispatcher.on('close', () => {
@@ -133,7 +134,7 @@ function connect(msg) {
 			ws = null;
 		}
 		if (error) {
-            setTimeout(() => connect(), 5000);
+            setTimeout(() => connect(msg), 5000);
         }
 	};
 }

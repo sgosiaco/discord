@@ -3,10 +3,11 @@ import { readdirSync, readFileSync } from 'fs';
 import { Queue } from './queue';
 import { createServer } from 'https';
 import * as WebSocket from 'ws';
+import Command from './cmds/Command'
 
 export default class Settings {
     private static instance: Settings;
-    cmds: Collection<string, object> = new Collection();
+    cmds: Collection<string, Command> = new Collection();
     connection: VoiceConnection = null;
     dispatcher: StreamDispatcher = null;
     songs = new Queue(100);
@@ -16,7 +17,7 @@ export default class Settings {
     currentSong: object = null;
     sockets: Array<WebSocket> = [];
     always = false;
-    alwaysCMDS: Collection<string, object> = new Collection();
+    alwaysCMDS: Collection<string, Command> = new Collection();
 
     private constructor() {
         
