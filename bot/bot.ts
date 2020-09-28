@@ -1,4 +1,4 @@
-import { Client, Collection, MessageFlags} from 'discord.js';
+import { Client, Collection, MessageFlags, TextChannel} from 'discord.js';
 import { prefix, token, defaultCooldown } from './config.json';
 import Settings from './settings';
 
@@ -75,6 +75,16 @@ client.on('message', msg => {
     } catch (error) {
         console.error(error);
         msg.reply('Error occured!');
+    }
+});
+
+client.on('voiceStateUpdate', (oldUser, newUser) => {
+    const log = oldUser.member.guild.channels.cache.find(ch => ch.name === 'time');
+    const time = new Date();
+    if (oldUser.channelID != null && newUser.channelID === null) {
+        (log as TextChannel).send(`${oldUser.member} has left ${oldUser.channel.name} at ${time.getHours()}:${time.getMinutes()}:${time.getSeconds()}`);
+    } else if (oldUser.channelID === null && newUser.channelID != null) {
+        (log as TextChannel).send(`${newUser.member} has joined ${newUser.channel.name} at ${time.getHours()}:${time.getMinutes()}:${time.getSeconds()}`);
     }
 });
 

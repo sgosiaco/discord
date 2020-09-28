@@ -17,6 +17,7 @@
     "@types/ws": "^7.2.6",
     "canvas": "^2.6.1",
     "discord.js": "^12.2.0",
+    "ffmpeg-static": "^4.2.6",
     "sodium": "^3.0.2",
     "typescript": "^3.9.7",
     "ytdl-core-discord": "^1.2.1"
