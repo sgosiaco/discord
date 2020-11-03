@@ -27,10 +27,8 @@ module.exports = {
         
         if (settings.dispatcher === null) {
             console.log(args[0]);
-            ytdl.getInfo(args[0], (err, info) => {
-                if(err) {
-                    return msg.reply('Error occured trying to load video info!')
-                }
+            try {
+                const info = await ytdl.getInfo(args[0])
                 if (info.related_videos.length > 0) {
                     settings.autoplayNext = `https://www.youtube.com/watch?v=${info.related_videos[0].id}`
                 } else {
@@ -38,12 +36,12 @@ module.exports = {
                 }
                 const videoEmbed = {
                     color: 0x0099ff,
-                    title: info.title,
+                    title: info.videoDetails.title,
                     url: args[0],
                     author: {
-                        name: info.author.name,
-                        url: info.author.channel_url,
-                        icon_url: info.author.avatar
+                        name: info.videoDetails.author.name,
+                        url: info.videoDetails.author.channel_url,
+                        icon_url: info.videoDetails.author.avatar
                     },
                     thumbnail: {
                         url: `https://img.youtube.com/vi/${info.video_id}/hqdefault.jpg`
@@ -51,12 +49,12 @@ module.exports = {
                     fields: [
                         {
                             name: 'Length',
-                            value: duration(info.length_seconds),
+                            value: duration(info.videoDetails.lengthSeconds),
                             inline: true
                         },
                         {
                             name: 'Published',
-                            value: uploaded(info.published),
+                            value: uploaded(info.videoDetails.published),
                             inline: true
                         },
                     ],
@@ -78,7 +76,9 @@ module.exports = {
                     socket.send(JSON.stringify(info))
                 })
                 settings.currentSong = info
-            })
+            } catch (e) {
+                return msg.reply('Error occured trying to load video info!')
+            }
             settings.dispatcher = settings.connection.play(await ytdl(args[0]), { type: 'opus', volume: 0.1 }); //ytdl(args[0], { quality: 'highestaudio' })
 
             settings.dispatcher.on('start', () => {

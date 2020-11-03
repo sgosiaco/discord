@@ -12,15 +12,15 @@
   "author": "sgosiaco",
   "license": "ISC",
   "dependencies": {
-    "@discordjs/opus": "^0.3.2",
-    "@types/node": "^14.0.27",
-    "@types/ws": "^7.2.6",
+    "@discordjs/opus": "^0.3.3",
+    "@types/node": "^14.14.6",
+    "@types/ws": "^7.2.9",
     "canvas": "^2.6.1",
-    "discord.js": "^12.2.0",
-    "ffmpeg-static": "^4.2.6",
+    "discord.js": "^12.4.1",
+    "ffmpeg-static": "^4.2.7",
     "sodium": "^3.0.2",
     "typescript": "^3.9.7",
-    "ytdl-core-discord": "^1.2.1"
+    "ytdl-core-discord": "^1.2.4"
   },
   "devDependencies": {
     "ts-node": "^8.10.2"
