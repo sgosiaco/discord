@@ -54,7 +54,7 @@ module.exports = {
                         },
                         {
                             name: 'Published',
-                            value: uploaded(info.videoDetails.published),
+                            value: info.videoDetails.publishDate,
                             inline: true
                         },
                     ],
