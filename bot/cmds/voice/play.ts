@@ -44,7 +44,7 @@ module.exports = {
                         icon_url: info.videoDetails.author.avatar
                     },
                     thumbnail: {
-                        url: `https://img.youtube.com/vi/${info.video_id}/hqdefault.jpg`
+                        url: `https://img.youtube.com/vi/${info.videoDetails.video_id}/hqdefault.jpg`
                     },
                     fields: [
                         {
