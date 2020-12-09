@@ -30,7 +30,7 @@ module.exports = {
         }
 
         const cmdName = args[0].toLowerCase();
-        const cmd  = settings.cmds.get(cmdName) || settings.cmds.find(item => item.aliases && item.aliases.includes(name));
+        const cmd  = settings.cmds.get(cmdName) || settings.cmds.find(item => item.aliases && item.aliases.includes(cmdName));
 
         if (!cmd) {
             return msg.reply('That\'s not a valid command!');
