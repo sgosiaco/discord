@@ -77,6 +77,7 @@ module.exports = {
                 })
                 settings.currentSong = info
             } catch (e) {
+                console.error(e)
                 return msg.reply('Error occured trying to load video info!')
             }
             settings.dispatcher = settings.connection.play(await ytdl(args[0]), { type: 'opus', volume: 0.1 }); //ytdl(args[0], { quality: 'highestaudio' })
