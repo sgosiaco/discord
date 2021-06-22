@@ -59,7 +59,7 @@ module.exports = {
                         },
                     ],
                     footer : {
-                        text: `Autoplay: ${settings.autoplay ? 'on' : 'off'} | Queue ${settings.songs.size}`
+                        text: `Autoplay: ${settings.autoplay ? 'on' : 'off'} | Queue ${settings.songs.size} | Volume ${settings.dispatcher.volume*100}%`
                     }
                 };
                 msg.suppressEmbeds(); //don't delete and instead suppress embed to keep song history?

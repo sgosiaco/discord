@@ -100,7 +100,7 @@ function connect(msg) {
                             },
                         ],
                         footer : {
-                            text: `Listeners: ${response.d.listeners}`
+                            text: `Listeners: ${response.d.listeners} | Volume ${settings.dispatcher.volume*100}%`
                         }
                     };
                     if (settings.playerMessage == null) {
