@@ -20,7 +20,7 @@ export default class Settings {
     always = false;
     alwaysCMDS: Collection<string, Command> = new Collection();
     timeout = null;
-    timeoutTime = 5000;
+    timeoutTime = 300000;
 
     private constructor() {
         
