@@ -19,6 +19,8 @@ export default class Settings {
     sockets: Array<WebSocket> = [];
     always = false;
     alwaysCMDS: Collection<string, Command> = new Collection();
+    timeout = null;
+    timeoutTime = 5000;
 
     private constructor() {
         

@@ -5,6 +5,7 @@ import { Message, MessageEmbed } from 'discord.js';
 import Settings from '../../settings';
 const pattern = new RegExp('^(http(s)?:\/\/)?((w){3}.)?youtu(be|.be)?(\.com)?\/.+');
 import Command from '../Command';
+import * as Leave from './leave';
 
 module.exports = {
     name: 'play',
@@ -30,7 +31,8 @@ module.exports = {
             try {
                 const info = await ytdl.getInfo(args[0])
                 if (info.related_videos.length > 0) {
-                    settings.autoplayNext = `https://www.youtube.com/watch?v=${info.related_videos[0].id}`
+                    const randomIndex = Math.floor(Math.random() * info.related_videos.length)
+                    settings.autoplayNext = `https://www.youtube.com/watch?v=${info.related_videos[randomIndex].id}`
                 } else {
                     settings.autoplayNext = null
                 }
@@ -80,6 +82,9 @@ module.exports = {
                 console.error(e)
                 return msg.reply('Error occured trying to load video info!')
             }
+            if (settings.timeout != null) {
+                clearTimeout(settings.timeout);
+            }
             settings.dispatcher = settings.connection.play(await ytdl(args[0]), { type: 'opus', volume: 0.1 }); //ytdl(args[0], { quality: 'highestaudio' })
 
             settings.dispatcher.on('start', () => {
@@ -103,6 +108,15 @@ module.exports = {
                 } else {
                     settings.playerMessage.delete();
                     settings.playerMessage = null;
+                    settings.timeout = setTimeout(() => {
+                        const settings = Settings.getInstance()
+                        if (settings.connection !== null) {
+                            settings.connection.disconnect();
+                            console.log(`Disconnected from ${settings.connection.channel.name}!`);
+                            settings.connection = null;
+                            settings.playerMessage = null;
+                        }
+                    }, settings.timeoutTime);
                 }
                 //start auto leave timer?
             });
