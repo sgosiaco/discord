@@ -41,7 +41,7 @@ module.exports = {
                     author: {
                         name: info.videoDetails.author.name,
                         url: info.videoDetails.author.channel_url,
-                        icon_url: info.videoDetails.author.thumbnails[0].url
+                        icon_url: info.videoDetails.author.avatar
                     },
                     thumbnail: {
                         url: `https://img.youtube.com/vi/${info.videoDetails.videoId}/hqdefault.jpg`
@@ -59,7 +59,7 @@ module.exports = {
                         },
                     ],
                     footer : {
-                        text: `Autoplay: ${settings.autoplay ? 'on' : 'off'} | Queue ${settings.songs.size} | Volume ${settings.dispatcher.volume*100}%`
+                        text: `Autoplay: ${settings.autoplay ? 'on' : 'off'} | Queue ${settings.songs.size} | Volume 10%`
                     }
                 };
                 msg.suppressEmbeds(); //don't delete and instead suppress embed to keep song history?
@@ -126,7 +126,7 @@ module.exports = {
                 .then((item) => {
                     item.suppressEmbeds();
                 });
-            const embed = new MessageEmbed(settings.playerMessage.embeds[0]).setFooter(`Autoplay: ${settings.autoplay ? 'on' : 'off'} | Queue ${settings.songs.getSize()}`)
+            const embed = new MessageEmbed(settings.playerMessage.embeds[0]).setFooter(`Autoplay: ${settings.autoplay ? 'on' : 'off'} | Queue ${settings.songs.getSize()} | Volume ${settings.dispatcher.volume*100}%`)
             settings.playerMessage.edit(embed);
         }
     }

@@ -14,7 +14,7 @@ module.exports = {
         if (settings.dispatcher !== null) {
             settings.autoplay = !settings.autoplay;
             msg.delete()
-            const embed = new MessageEmbed(settings.playerMessage.embeds[0]).setFooter(`Autoplay: ${settings.autoplay ? 'on' : 'off'} | Queue ${settings.songs.getSize()}`)
+            const embed = new MessageEmbed(settings.playerMessage.embeds[0]).setFooter(`Autoplay: ${settings.autoplay ? 'on' : 'off'} | Queue ${settings.songs.getSize()} | Volume ${settings.dispatcher.volume*100}%`)
             settings.playerMessage.edit(embed);
         }
     }
