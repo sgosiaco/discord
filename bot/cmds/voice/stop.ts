@@ -15,6 +15,15 @@ module.exports = {
             settings.dispatcher.destroy();
             console.log('Stopped media');
             settings.dispatcher = null;
+            settings.timeout = setTimeout(() => {
+                const settings = Settings.getInstance()
+                if (settings.connection !== null) {
+                    settings.connection.disconnect();
+                    console.log(`Disconnected from ${settings.connection.channel.name}!`);
+                    settings.connection = null;
+                    settings.playerMessage = null;
+                }
+            }, settings.timeoutTime);
         }
     }
 }

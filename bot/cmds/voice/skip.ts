@@ -28,6 +28,15 @@ module.exports = {
             } else {
                 settings.playerMessage.delete();
                 settings.playerMessage = null;
+                settings.timeout = setTimeout(() => {
+                    const settings = Settings.getInstance()
+                    if (settings.connection !== null) {
+                        settings.connection.disconnect();
+                        console.log(`Disconnected from ${settings.connection.channel.name}!`);
+                        settings.connection = null;
+                        settings.playerMessage = null;
+                    }
+                }, settings.timeoutTime);
             }
         }
     }
