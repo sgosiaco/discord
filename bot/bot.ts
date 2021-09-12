@@ -80,11 +80,11 @@ client.on('message', msg => {
 
 client.on('voiceStateUpdate', (oldUser, newUser) => {
     const log = oldUser.member.guild.channels.cache.find(ch => ch.name === 'time');
-    const time = new Date();
+    const time = (Date.now() / 1000) >> 0;
     if (oldUser.channelID != null && newUser.channelID === null) {
-        (log as TextChannel).send(`${oldUser.member} has left ${oldUser.channel.name} at ${time.getHours()}:${time.getMinutes()}:${time.getSeconds()}`);
+        (log as TextChannel).send(`${oldUser.member} has left ${oldUser.channel.name} at <t:${time}:R>`);
     } else if (oldUser.channelID === null && newUser.channelID != null) {
-        (log as TextChannel).send(`${newUser.member} has joined ${newUser.channel.name} at ${time.getHours()}:${time.getMinutes()}:${time.getSeconds()}`);
+        (log as TextChannel).send(`${newUser.member} has joined ${newUser.channel.name} at <t:${time}:R>`);
     }
 });
 
