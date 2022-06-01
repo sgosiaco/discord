@@ -1,11 +1,11 @@
-import { Client, Collection, MessageFlags, TextChannel} from 'discord.js';
+import { Client, Collection, MessageFlags, TextChannel } from 'discord.js';
 import { prefix, token, defaultCooldown } from './config.json';
 import Settings from './settings';
 
 const client = new Client();
 const settings = Settings.getInstance();
 settings.init('./cmds');
-const cooldowns: Collection<string, Collection<string, number>>= new Collection();
+const cooldowns: Collection<string, Collection<string, number>> = new Collection();
 
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
@@ -15,14 +15,21 @@ client.on('message', msg => {
     if (settings.always && !msg.author.bot && !msg.content.startsWith(prefix) && !msg.mentions.has(client.user) && msg.channel.type === 'text') {
         let words = msg.content.trim().split(/ +/).map(word => word.toLowerCase());
         let keyword = null;
+
         const cmd = settings.alwaysCMDS.find(item => {
-            keyword = item.always.filter(word => words.includes(word)).shift()
+            keyword = item.always.filter(word => {
+                for (const w of words) {
+                    if (w.includes(word)) {
+                        return word
+                    }
+                }
+            }).shift()
             return keyword !== undefined;
         });
         if (!cmd) return;
         return cmd.execute(msg, words, keyword);
     }
-    if ( (!msg.content.startsWith(prefix) || msg.author.bot) && !msg.mentions.has(client.user)) return;
+    if ((!msg.content.startsWith(prefix) || msg.author.bot) && !msg.mentions.has(client.user)) return;
 
     const at = `<@!${client.user.id}>`
     let args = msg.content.slice(prefix.length).trim().split(/ +/);
@@ -36,21 +43,21 @@ client.on('message', msg => {
     const cmd = settings.cmds.get(cmdName) || settings.cmds.find(item => item.aliases && item.aliases.includes(cmdName));
 
     if (!cmd) return;
-    
-    if(cmd.guildOnly && msg.channel.type !== 'text') {
+
+    if (cmd.guildOnly && msg.channel.type !== 'text') {
         return msg.reply('I can\'t execute that command inside DMs!');
     }
 
-    if(cmd.args && !args.length) {
+    if (cmd.args && !args.length) {
         let reply = 'You didn\'t provide any arguments!';
 
-        if(cmd.usage) {
+        if (cmd.usage) {
             reply += `\nThe proper usage is: \`${prefix}${cmd.name} ${cmd.usage}\``;
         }
         return msg.reply(reply);
     }
 
-    if(!cooldowns.has(cmd.name)) {
+    if (!cooldowns.has(cmd.name)) {
         cooldowns.set(cmd.name, new Collection());
     }
 
@@ -58,7 +65,7 @@ client.on('message', msg => {
     const timestamp = cooldowns.get(cmd.name);
     const cooldownTime = (cmd.cooldown || defaultCooldown) * 1000;
 
-    if(timestamp.has(msg.author.id)) {
+    if (timestamp.has(msg.author.id)) {
         const expireTime = timestamp.get(msg.author.id) + cooldownTime;
 
         if (now < expireTime) {
