@@ -10,6 +10,7 @@ module.exports = {
     cooldown: 5,
     args: false,
     always: ['our'],
+    exact: true,
     guildOnly: true,
     async execute(msg: Message, words: Array<string>, word: string) {
         let idx = words.indexOf(word);
@@ -25,8 +26,8 @@ module.exports = {
         ctx.strokeStyle = '#000000';
         ctx.lineWidth = 4;
         const width = ctx.measureText(text).width / 2;
-        ctx.strokeText(text, 180 - width, canvas.height/2 + 60);
-        ctx.fillText(text, 180 - width, canvas.height/2 + 60);
+        ctx.strokeText(text, 180 - width, canvas.height / 2 + 60);
+        ctx.fillText(text, 180 - width, canvas.height / 2 + 60);
 
         const attachment = new MessageAttachment(canvas.toBuffer(), 'salute.png');
         attachment.width = 300;

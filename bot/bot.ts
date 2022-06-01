@@ -18,6 +18,11 @@ client.on('message', msg => {
 
         const cmd = settings.alwaysCMDS.find(item => {
             keyword = item.always.filter(word => {
+                // if exact check only whole words
+                if (item.exact) {
+                    return words.includes(word)
+                }
+                // otherwise check for partial string match
                 for (const w of words) {
                     if (w.includes(word)) {
                         return word

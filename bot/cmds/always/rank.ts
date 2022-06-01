@@ -1,4 +1,4 @@
-import { Message, MessageAttachment }from 'discord.js';
+import { Message, MessageAttachment } from 'discord.js';
 import { createCanvas, loadImage } from 'canvas';
 import { capitalize } from '../../utils';
 
@@ -10,6 +10,7 @@ module.exports = {
     cooldown: 5,
     args: false,
     always: ['general', 'lieutenant', 'colonel', 'admiral', 'captian', 'major'],
+    exact: true,
     guildOnly: true,
     async execute(msg: Message, words: Array<string>, word: string) {
         let idx = words.indexOf(word);

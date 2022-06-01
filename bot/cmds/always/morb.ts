@@ -10,6 +10,7 @@ module.exports = {
   cooldown: 5,
   args: false,
   always: ['morb'],
+  exact: false,
   guildOnly: true,
   async execute(msg: Message, words: Array<string>, word: string) {
     const text = `It's morbin' time`;

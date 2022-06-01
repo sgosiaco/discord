@@ -8,6 +8,7 @@ export default interface Command {
     cooldown: number;
     args: boolean;
     always: Array<string>;
+    exact: boolean;
     guildOnly: boolean;
     execute(...args: any[])
 }
