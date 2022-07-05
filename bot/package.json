@@ -12,7 +12,7 @@
   "author": "sgosiaco",
   "license": "ISC",
   "dependencies": {
-    "@discordjs/opus": "^0.3.3",
+    "@discordjs/opus": "^0.8.0",
     "@types/node": "^14.14.11",
     "@types/ws": "^7.4.0",
     "canvas": "^2.6.1",
